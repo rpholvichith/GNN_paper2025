@@ -87,9 +87,9 @@ class GFK(nn.Module):
         self.comb = Combination(nfeat, self.level, dropoutC, sole)
         self.mlp = MLP(nfeat, nlayers,nhidden, nclass, dropoutM, bias)
 
-
     def forward(self, x):
-        x = self.comb(x)                      
+        if x.dim() == 2:
+            x = x.view(-1, self.level, self.nfeat)
+        x = self.comb(x)
         x = self.mlp(x)
         return x
-       
